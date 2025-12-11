@@ -99,12 +99,6 @@ After deobfuscation, you can identify:
 - **Bot Detection Flags**: Mouse movement, keyboard timing, synthetic events
 - **Fingerprint Collection**: Canvas, WebGL, screen, navigator properties
 
-## References
-
-- [nullpt.rs - Reverse Engineering TikTok's VM](https://nullpt.rs/reverse-engineering-tiktok-vm-1)
-- [notemrovsky/tiktok-reverse-engineering](https://github.com/notemrovsky/tiktok-reverse-engineering)
-- [Ibiyemi Abiodun - Reversing TikTok Part 2](https://ibiyemiabiodun.com/projects/reversing-tiktok-pt2/)
-
 ## Disclaimer
 
 This repository is for educational purposes only. Understanding protection mechanisms helps build better security systems.
