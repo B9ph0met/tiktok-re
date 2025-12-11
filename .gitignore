@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# TikTok SDK files (download yourself)
+decrypt/webmssdk.js
+decrypt/output.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Output of the go coverage tool
+*.out
