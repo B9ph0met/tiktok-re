@@ -21,10 +21,13 @@ tiktok-re/
 │   └── output.js         # Deobfuscated output
 ├── tiktok-search/
 │   ├── search.mjs        # Complete user search implementation
-│   ├── xbogus.mjs        # X-Bogus signature generator
+│   ├── xbogus.mjs        # X-Bogus signature generator (native implementation)
 │   └── xgnarly.mjs       # X-Gnarly signature generator (ChaCha-based)
+├── playwright/
+│   └── tiktok_search.js  # Browser-based search using Playwright
 ├── scripts/
 │   ├── get_cookies.go    # Fetch initial cookies from TikTok
+│   ├── get_search.go     # Search API testing
 │   └── tls_check.go      # Test TLS fingerprinting behavior
 ├── hooks/
 │   └── console_hooks.js  # Browser console hooks for runtime analysis
@@ -67,10 +70,23 @@ node search.mjs gamergirl
 This will:
 1. Fetch an msToken from TikTok
 2. Get session cookies and device IDs
-3. Generate X-Bogus signature (using the `xbogus` npm package)
+3. Generate X-Bogus signature (native reverse-engineered implementation)
 4. Generate X-Gnarly signature (ChaCha-based encryption)
 5. Make an authenticated search request
 6. Display matching users
+
+### X-Bogus Algorithm
+
+The X-Bogus signature is generated using a fully reverse-engineered native implementation:
+
+1. **Double MD5** - Hash the URL params and body with `MD5(MD5(data))`
+2. **User-Agent Hash** - RC4 encrypt the UA, custom Base64 encode, then MD5
+3. **Build Data Array** - Combine timestamp, magic number (`536919696`), and hash bytes
+4. **Filter & Scramble** - Reorder bytes using predefined index patterns
+5. **RC4 Encrypt** - Final encryption pass with key `[255]`
+6. **Custom Base64** - Encode using TikTok's alphabet: `Dkdpgh4ZKsQB80/Mfvw36XI1R25-WUAlEi7NLboqYTOPuzmFjJnryx9HVGcaStCe`
+
+No external dependencies required for signature generation.
 
 You can also use the signature generators standalone:
 
@@ -82,11 +98,22 @@ node xbogus.mjs "<full_url>" "<user_agent>"
 node xgnarly.mjs "<query_string>" "<user_agent>"
 ```
 
+### Playwright
+
+Browser-based approach using Playwright to extract signatures from a real browser context:
+
+```bash
+cd playwright
+npm install
+node tiktok_search.js <keyword>
+```
+
 ### Go Scripts
 
 ```bash
 cd scripts
 go run get_cookies.go
+go run get_search.go
 ```
 
 ## Getting webmssdk.js
