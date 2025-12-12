@@ -67,13 +67,49 @@ Example:
 node search.mjs gamergirl
 ```
 
-This will:
-1. Fetch an msToken from TikTok
-2. Get session cookies and device IDs
-3. Generate X-Bogus signature (native reverse-engineered implementation)
-4. Generate X-Gnarly signature (ChaCha-based encryption)
-5. Make an authenticated search request
-6. Display matching users
+## How the Scraper Works
+
+The scraper bypasses TikTok's anti-bot protection by generating valid cryptographic signatures. Here's the complete flow:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           TikTok Search Flow                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  1. GET /api/recommend/item_list/?aid=1988                                  │
+│     └──► Extract msToken from Set-Cookie header                             │
+│                                                                             │
+│  2. GET /search?q=test                                                      │
+│     └──► Extract cookies (tt_chain_token, ttwid, etc.)                      │
+│     └──► Parse device_id and odin_id from HTML response                     │
+│                                                                             │
+│  3. Build search URL with 30+ parameters                                    │
+│     └──► aid, device_id, keyword, msToken, browser info, etc.               │
+│                                                                             │
+│  4. Generate X-Bogus signature                                              │
+│     └──► Input: full URL + user-agent                                       │
+│     └──► Output: ~28 char signature (e.g., "DFSzswVOyGIANVt9SBOmfK3T")      │
+│                                                                             │
+│  5. Generate X-Gnarly signature                                             │
+│     └──► Input: query string + user-agent                                   │
+│     └──► Output: ~200 char ChaCha-encrypted signature                       │
+│                                                                             │
+│  6. GET /api/search/user/full/?...&X-Bogus=...&X-Gnarly=...                 │
+│     └──► Include all cookies and headers                                    │
+│     └──► Receive JSON response with user data                               │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Key Components
+
+| Component | Purpose |
+|-----------|---------|
+| **msToken** | Session token from TikTok, required for API requests |
+| **device_id** | 19-digit device identifier extracted from page HTML |
+| **odin_id** | Additional device identifier for tracking |
+| **X-Bogus** | Request integrity signature (RC4 + custom Base64) |
+| **X-Gnarly** | Secondary signature using ChaCha encryption |
 
 ### X-Bogus Algorithm
 
@@ -87,6 +123,26 @@ The X-Bogus signature is generated using a fully reverse-engineered native imple
 6. **Custom Base64** - Encode using TikTok's alphabet: `Dkdpgh4ZKsQB80/Mfvw36XI1R25-WUAlEi7NLboqYTOPuzmFjJnryx9HVGcaStCe`
 
 No external dependencies required for signature generation.
+
+### X-Gnarly Algorithm
+
+X-Gnarly uses ChaCha stream cipher encryption with a custom protocol:
+
+1. **Build Payload Map** - Create key-value pairs:
+   - MD5 hashes of query string, body, and user-agent
+   - Timestamp (seconds and microseconds)
+   - Version info (`5.1.1`, `1.0.0.314`)
+   - XOR checksum of all numeric values
+
+2. **Serialize** - Convert map to binary format with length-prefixed values
+
+3. **Generate Key** - Use ChaCha-based PRNG to generate 12 random 32-bit words
+
+4. **Encrypt** - ChaCha encrypt the payload with dynamic round count (5-20 rounds based on key)
+
+5. **Encode** - Custom Base64 with alphabet: `u09tbS3UvgDEe6r-ZVMXzLpsAohTn7mdINQlW412GqBjfYiyk8JORCF5/xKHwacP=`
+
+### Standalone Signature Generators
 
 You can also use the signature generators standalone:
 
