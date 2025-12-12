@@ -1,0 +1,21 @@
+{
+  "name": "tiktok-playwright",
+  "version": "1.0.0",
+  "description": "TikTok search automation using Playwright",
+  "main": "tiktok_search.js",
+  "scripts": {
+    "search": "node tiktok_search.js",
+    "install-browser": "npx playwright install chromium"
+  },
+  "keywords": [
+    "tiktok",
+    "playwright",
+    "automation",
+    "scraping"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.40.0"
+  }
+}

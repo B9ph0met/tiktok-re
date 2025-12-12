@@ -20,7 +20,7 @@ tiktok-re/
 │   └── output.js         # Deobfuscated output
 ├── scripts/
 │   ├── get_cookies.go    # Fetch initial cookies from TikTok
-│   └── tls_test.go       # Test TLS fingerprinting behavior
+│   └── tls_check.go       # Test TLS fingerprinting behavior
 ├── hooks/
 │   └── console_hooks.js  # Browser console hooks for runtime analysis
 └── README.md
