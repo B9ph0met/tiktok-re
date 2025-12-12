@@ -6,6 +6,7 @@ Tools and scripts for analyzing TikTok's web-based anti-bot protection system.
 
 This repository contains:
 
+- **tiktok-search** - Working implementation of TikTok's user search API with X-Bogus and X-Gnarly signatures
 - **Babel deobfuscation scripts** for making `webmssdk.js` readable
 - **Go scripts** for testing HTTP requests and analyzing responses
 - **Console hooks** for runtime analysis in the browser
@@ -18,9 +19,13 @@ tiktok-re/
 │   ├── deobf.js          # Babel deobfuscation script
 │   ├── webmssdk.js       # Original SDK (not included, download yourself)
 │   └── output.js         # Deobfuscated output
+├── tiktok-search/
+│   ├── search.mjs        # Complete user search implementation
+│   ├── xbogus.mjs        # X-Bogus signature generator
+│   └── xgnarly.mjs       # X-Gnarly signature generator (ChaCha-based)
 ├── scripts/
 │   ├── get_cookies.go    # Fetch initial cookies from TikTok
-│   └── tls_check.go       # Test TLS fingerprinting behavior
+│   └── tls_check.go      # Test TLS fingerprinting behavior
 ├── hooks/
 │   └── console_hooks.js  # Browser console hooks for runtime analysis
 └── README.md
@@ -44,6 +49,38 @@ node deobf.js
 ```
 
 This outputs a more readable version to `output.js`.
+
+### TikTok Search
+
+```bash
+cd tiktok-search
+npm install
+node search.mjs <keyword>
+```
+
+Example:
+
+```bash
+node search.mjs gamergirl
+```
+
+This will:
+1. Fetch an msToken from TikTok
+2. Get session cookies and device IDs
+3. Generate X-Bogus signature (using the `xbogus` npm package)
+4. Generate X-Gnarly signature (ChaCha-based encryption)
+5. Make an authenticated search request
+6. Display matching users
+
+You can also use the signature generators standalone:
+
+```bash
+# X-Bogus
+node xbogus.mjs "<full_url>" "<user_agent>"
+
+# X-Gnarly
+node xgnarly.mjs "<query_string>" "<user_agent>"
+```
 
 ### Go Scripts
 
