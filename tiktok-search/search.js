@@ -1,20 +1,3 @@
-/**
- * TikTok User Search
- * 
- * Flow:
- * 1. GET /api/recommend/item_list/?aid=1988 → get msToken from Set-Cookie
- * 2. Build search URL with all parameters
- * 3. Generate X-Bogus (using xbogus.mjs)
- * 4. Generate X-Gnarly (using xgnarly.mjs)
- * 5. Make the search request with curl
- * 
- * Usage:
- *   node search.mjs <keyword>
- * 
- * Example:
- *   node search.mjs gamergirl
- */
-
 import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -122,7 +105,7 @@ function buildSearchURL(keyword, msToken, deviceId, odinId) {
     'region': 'US',
     'screen_height': '1117',
     'screen_width': '1728',
-    'tz_name': 'America/Boise',
+    'tz_name': 'America/Los_Angeles',
     'user_is_login': 'false',
     'web_search_code': JSON.stringify({
       tiktok: {
@@ -154,7 +137,7 @@ function generateSignatures(baseURL, queryString) {
   console.log('\nStep 4: Generating signatures...');
   
   // Generate X-Bogus
-  const xbogusPath = join(__dirname, 'xbogus.mjs');
+  const xbogusPath = join(__dirname, 'xbogus.js');
   const xBogus = execSync(
     `node "${xbogusPath}" "${baseURL}" "${USER_AGENT}"`,
     { encoding: 'utf-8' }
@@ -162,7 +145,7 @@ function generateSignatures(baseURL, queryString) {
   console.log(`   ✓ X-Bogus: ${xBogus}`);
   
   // Generate X-Gnarly
-  const xgnarlyPath = join(__dirname, 'xgnarly.mjs');
+  const xgnarlyPath = join(__dirname, 'xgnarly.js');
   const xGnarly = execSync(
     `node "${xgnarlyPath}" "${queryString}" "${USER_AGENT}"`,
     { encoding: 'utf-8' }

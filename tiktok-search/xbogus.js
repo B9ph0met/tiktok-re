@@ -12,7 +12,7 @@
  * 6. Add prefix bytes and custom Base64 encode
  * 
  * Usage:
- *   node xbogus.mjs "<url>" "<userAgent>"
+ *   node xbogus.js "<url>" "<userAgent>"
  */
 
 import crypto from 'crypto';
@@ -246,7 +246,7 @@ const url = process.argv[2];
 const userAgent = process.argv[3] || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
 
 if (!url) {
-    console.error('Usage: node xbogus.mjs "<url>" [userAgent]');
+    console.error('Usage: node xbogus.js "<url>" [userAgent]');
     process.exit(1);
 }
 

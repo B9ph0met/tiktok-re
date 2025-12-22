@@ -5,10 +5,10 @@
  * Uses ChaCha encryption with a custom Base64 alphabet.
  * 
  * Usage:
- *   node xgnarly.mjs "<queryString>" "<userAgent>" [body]
+ *   node xgnarly.js "<queryString>" "<userAgent>" [body]
  * 
  * Example:
- *   node xgnarly.mjs "aid=1988&keyword=test&msToken=abc123" "Mozilla/5.0..."
+ *   node xgnarly.js "aid=1988&keyword=test&msToken=abc123" "Mozilla/5.0..."
  * 
  * Output:
  *   Just the X-Gnarly signature string
@@ -232,7 +232,7 @@ const userAgent = process.argv[3] || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_
 const body = process.argv[4] || '';
 
 if (!queryString) {
-  console.error('Usage: node xgnarly.mjs "<queryString>" [userAgent] [body]');
+  console.error('Usage: node xgnarly.js "<queryString>" [userAgent] [body]');
   console.error('');
   console.error('Note: queryString should NOT include the ? prefix');
   console.error('Example: "aid=1988&keyword=test&msToken=abc123"');

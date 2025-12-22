@@ -1,0 +1,20 @@
+keyword	username	nickname	followers
+test	@plugbettertech	plug - shop tech	3400000
+test	@_powervision_	Power Vision Tests	5900000
+test	@test46928	user40632737130	61100
+test	@test	user39494307298	100700
+test	@te5tt	test	424300
+test	@test312416	test	64800
+test	@_t35t	Test	41000
+test	@test28910	test 2	233300
+test	@practicatest.cl	Practicatest 🚗 Teórico Chile	1500000
+hunting	@thehuntingpublic	The Hunting Public	333300
+hunting	@huntingclipss	huntingclipss	207900
+hunting	@bowmarbowhunting	Bowmar Bowhunting	604600
+hunting	@huntingsuccess	Hunting Success	71600
+hunting	@deividas.hunting	Deividas Staponkus	407700
+hunting	@medusaslittleangel	Naomi Rose	1900000
+hunting	@hunting.world.27	Hunting World	41200
+hunting	@honeyhunting	honey	845400
+hunting	@tastyhunting	tasty hunting	510000
+hunting	@huntingshopsitara	khan traders	142900
